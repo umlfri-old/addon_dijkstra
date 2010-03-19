@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<AddOn xmlns="http://umlfri.org/xmlschema/addon.xsd">
+    <Identity uri="urn:umlfri.org:plugin:dijkstra" />
+    
+    <FriendlyName name="Dijkstra's algorithm" version="0.1" />
+    <Author>
+        <Name name="Tomas Baca" />
+        <Homepage url="http://umlfri.org" />
+        
+        <CommonLicense name="GPL-2" />
+    </Author>
+    
+    <Icon path="icon.png" />
+    <Description>
+        Graph search algorithm that solves the single-source
+        shortest path problem for a graph with nonnegative
+        edge path costs, producing a shortest path tree.
+    </Description>
+    
+    <Plugin>
+        <Code os="all" language="python" path="plugin" />
+        
+        <Metamodel required="urn:umlfri.org:metamodel:graphTheory" />
+    </Plugin>
+</AddOn>
