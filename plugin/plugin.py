@@ -1,6 +1,6 @@
 import random
-from lib.Addons.Plugin.Client.Interface import CInterface
 from lib.Exceptions import *
+import thread
 
 
 class Node(object):
@@ -64,20 +64,11 @@ class Plugin(object):
     
     def __init__(self, interface):
         self.interface = interface
-        self.interface.AddMenu(
-            'ToolButton', 
-            'hndCommandBar', 
-            ''.join(chr(random.randint(97,125))for i in xrange(6)),
-            self.onReset,
-            stock_id = 'gtk-refresh',
-            text = 'Reset')
-        self.interface.AddMenu(
-            'ToolButton', 
-            'hndCommandBar', 
-            ''.join(chr(random.randint(97,125))for i in xrange(6)),
-            self.onStep,
-            stock_id = 'gtk-go-forward',
-            text = 'Step')
+        self.interface.SetGtkMainloop()
+        adapter = self.interface.GetAdapter()
+        bar = adapter.GetButtonBar()
+        bar.AddStockButton('cmdDijkstraReset', self.onReset, -1, 'gtk-refresh', 'Reset')
+        bar.AddStockButton('cmdDijkstraForward', self.onStep, -1, 'gtk-go-forward', 'Step')
         
     def onReset(self, *args):
         try:
