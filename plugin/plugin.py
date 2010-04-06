@@ -65,32 +65,33 @@ class Plugin(object):
     def __init__(self, interface):
         self.interface = interface
         self.interface.SetGtkMainloop()
-        adapter = self.interface.GetAdapter()
-        bar = adapter.GetButtonBar()
+        self.adapter = self.interface.GetAdapter()
+        self.guimanager = self.adapter.GetGuiManager()
+        bar = self.guimanager.GetButtonBar()
         bar.AddStockButton('cmdDijkstraReset', self.onReset, -1, 'gtk-refresh', 'Reset')
         bar.AddStockButton('cmdDijkstraForward', self.onStep, -1, 'gtk-go-forward', 'Step')
         
     def onReset(self, *args):
         try:
             with self.interface.GetTransaction():
-                project = self.interface.GetAdapter().GetProject()
+                project = self.adapter.GetProject()
                 if project is None:
-                    self.interface.DisplayWarning('No project loaded')
+                    self.guimanager.DisplayWarning('No project loaded')
                     return
                 
                 metamodel = project.GetMetamodel()
                 if metamodel.GetUri() != 'urn:umlfri.org:metamodel:graphTheory':
-                    self.interface.DisplayWarning('Not supported metamodel')
+                    self.guimanager.DisplayWarning('Not supported metamodel')
                     return
                 
-                diagram = self.interface.GetAdapter().GetCurrentDiagram()
+                diagram = self.adapter.GetCurrentDiagram()
                 if diagram is None or diagram.GetType() != 'Graph':
-                    self.interface.DisplayWarning('This is not a Graph')
+                    self.guimanager.DisplayWarning('This is not a Graph')
                     return
                 
                 s = [i.GetId() for i in diagram.GetSelected()]
                 if len(s) > 1:
-                    self.interface.DisplayWarning('Too many nodes selected')
+                    self.guimanager.DisplayWarning('Too many nodes selected')
                     return
                 for e in diagram.GetElements():
                     n = Node(e)
@@ -114,26 +115,26 @@ class Plugin(object):
             
         
         except PluginProjectNotLoaded:
-            self.interface.DisplayWarning('Project is not loaded')
+            self.guimanager.DisplayWarning('Project is not loaded')
         
     
     def onStep(self, *args):
         try:
             with self.interface.GetTransaction():
                 
-                project = self.interface.GetAdapter().GetProject()
+                project = self.adapter.GetProject()
                 if project is None:
-                    self.interface.DisplayWarning('No project loaded')
+                    self.guimanager.DisplayWarning('No project loaded')
                     return
                 
                 metamodel = project.GetMetamodel()
                 if metamodel.GetUri() != 'urn:umlfri.org:metamodel:graphTheory':
-                    self.interface.DisplayWarning('Not supported metamodel')
+                    self.guimanager.DisplayWarning('Not supported metamodel')
                     return
                 
-                diagram = self.interface.GetAdapter().GetCurrentDiagram()
+                diagram = self.adapter.GetCurrentDiagram()
                 if diagram is None or diagram.GetType() != 'Graph':
-                    self.interface.DisplayWarning('This is not a Graph')
+                    self.guimanager.DisplayWarning('This is not a Graph')
                     return
                 
                 nodes = {}
@@ -182,7 +183,7 @@ class Plugin(object):
                     e.Save()
         
         except PluginProjectNotLoaded:
-            self.interface.DisplayWarning('Project is not loaded')
+            self.guimanager.DisplayWarning('Project is not loaded')
 
 # select plugin main object
 pluginMain = Plugin
