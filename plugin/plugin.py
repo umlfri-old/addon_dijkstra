@@ -113,7 +113,6 @@ class Plugin(object):
                     e.reversed = False
                     e.Save()
             
-        
         except PluginProjectNotLoaded:
             self.guimanager.DisplayWarning('Project is not loaded')
         
