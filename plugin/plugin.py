@@ -68,8 +68,8 @@ class Plugin(object):
         self.adapter = self.interface.GetAdapter()
         self.guimanager = self.adapter.GetGuiManager()
         bar = self.guimanager.GetButtonBar()
-        bar.AddStockButton('cmdDijkstraReset', self.onReset, -1, 'gtk-refresh', 'Reset')
-        bar.AddStockButton('cmdDijkstraForward', self.onStep, -1, 'gtk-go-forward', 'Step')
+        bar.AddButton('cmdDijkstraReset', self.onReset, -1, 'Dijkstra\nReset')
+        bar.AddButton('cmdDijkstraForward', self.onStep, -1, 'Dijkstra\nStep')
         
     def onReset(self, *args):
         try:
@@ -85,7 +85,7 @@ class Plugin(object):
                     return
                 
                 diagram = self.adapter.GetCurrentDiagram()
-                if diagram is None or diagram.GetType() != 'Graph':
+                if diagram is None or diagram.GetType().GetName() != 'Graph':
                     self.guimanager.DisplayWarning('This is not a Graph')
                     return
                 
@@ -132,7 +132,7 @@ class Plugin(object):
                     return
                 
                 diagram = self.adapter.GetCurrentDiagram()
-                if diagram is None or diagram.GetType() != 'Graph':
+                if diagram is None or diagram.GetType().GetName() != 'Graph':
                     self.guimanager.DisplayWarning('This is not a Graph')
                     return
                 
