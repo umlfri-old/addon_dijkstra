@@ -17,9 +17,11 @@
         edge path costs, producing a shortest path tree.
     </Description>
     
+    <Dependencies>
+        <AddOn uri="urn:umlfri.org:metamodel:graphTheory" required="true" />
+    </Dependencies>
+    
     <Plugin>
         <Code os="all" language="python" path="plugin" />
-        
-        <Metamodel required="urn:umlfri.org:metamodel:graphTheory" />
     </Plugin>
 </AddOn>
